@@ -1,7 +1,9 @@
-package com.wty.app.wifilamp;
+package com.wty.app.wifilamp.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import com.wty.app.wifilamp.R;
 
 public class MainActivity extends AppCompatActivity {
 
