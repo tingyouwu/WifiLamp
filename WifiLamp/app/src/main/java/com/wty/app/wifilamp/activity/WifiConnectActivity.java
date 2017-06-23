@@ -73,6 +73,12 @@ public class WifiConnectActivity extends BaseActivity {
                     }
                     List<ScanResult> list = new ArrayList<>();
                     list.addAll(wifimap.values());
+
+                    WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+                    WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                    wifiConnectIcon.setImageResource(R.mipmap.wifi_connect_y);
+                    wifiName.setText(wifiInfo.getSSID());
+
                     adapter.refreshList(list);
                 }
             }
