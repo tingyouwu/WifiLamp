@@ -16,6 +16,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    repositories {
+        maven {
+            url "https://jitpack.io"
+        }
+    }
 }
 
 dependencies {
@@ -25,4 +31,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.2@aar'
     compile 'io.reactivex:rxjava:1.1.5'
+    compile 'com.github.hackware1993:MagicIndicator:1.2.1'
 }

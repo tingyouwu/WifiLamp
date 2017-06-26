@@ -10,7 +10,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wty.app.wifilamp.R;
 import com.wty.app.wifilamp.adapter.WifiListAdapter;
-import com.wty.app.wifilamp.util.GpsUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -42,6 +40,7 @@ import static android.os.Build.VERSION_CODES.M;
 public class WifiConnectActivity extends BaseActivity {
     public static final String TAG = "WifiConnectActivity";
 
+    @BindView(R.id.main_setting) ImageView main_setting;
     @BindView(R.id.wifi_connect_icon) ImageView wifiConnectIcon;
     @BindView(R.id.wifi_state_ll) LinearLayout wifiStateLL;
     @BindView(R.id.wifi_name) TextView wifiName;
@@ -132,12 +131,22 @@ public class WifiConnectActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        main_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WifiConnectActivity.this, SettingActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        wifiManager.startScan();
+        if(wifiManager != null){
+            wifiManager.startScan();
+        }
         /**
          * 在onPause()中判断wifi连接状态
          *暂时不做wifi状态监听（wifi确认链接后返回页面，或者重启app，才会生效）
