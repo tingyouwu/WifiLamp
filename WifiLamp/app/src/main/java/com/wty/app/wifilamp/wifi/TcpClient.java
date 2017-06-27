@@ -1,7 +1,12 @@
 package com.wty.app.wifilamp.wifi;
 
+import android.util.Log;
+
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 /**
  * TCP Socket客户端
@@ -33,8 +38,13 @@ public abstract class TcpClient implements Runnable {
 
     @Override
     public void run() {
+        Socket socket = null;
         try {
-            Socket socket = new Socket(hostIP, port);
+            socket = new Socket();
+            SocketAddress socketAddress = new InetSocketAddress(hostIP,
+                    port);// IP和端口号
+            //阻塞等待连接
+            socket.connect(socketAddress, 5000);
             transceiver = new SocketTransceiver(socket) {
 
                 @Override
@@ -53,6 +63,14 @@ public abstract class TcpClient implements Runnable {
             this.onConnect(transceiver);
         } catch (Exception e) {
             e.printStackTrace();
+            //关闭socket
+            try {
+                if(socket != null){
+                    socket.close();
+                }
+            } catch (IOException e1) {
+                Log.e("wifilamp", "unable to close() socket during connection failure", e1);
+            }
             this.onConnectFailed();
         }
     }

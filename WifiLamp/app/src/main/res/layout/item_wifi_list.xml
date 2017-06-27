@@ -9,6 +9,7 @@
             android:maxLength="20"
             android:textStyle="bold"
             android:textSize="16sp"
+            android:gravity="center_horizontal"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"

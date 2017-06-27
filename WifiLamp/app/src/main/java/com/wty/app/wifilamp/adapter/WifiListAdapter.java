@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ import java.util.List;
  */
 public class WifiListAdapter extends BaseViewCommonAdapter<ScanResult> {
 
+    private String currentWifiSSID;
+
     public WifiListAdapter(Context context, List<ScanResult> data){
         super(context, R.layout.item_wifi_list,data);
     }
@@ -24,7 +27,14 @@ public class WifiListAdapter extends BaseViewCommonAdapter<ScanResult> {
     @Override
     protected void convert(BaseViewHolder holder, ScanResult scanResult, int position) {
         TextView tv_name = holder.getView(R.id.wifi_name);
-        tv_name.setText(scanResult.SSID);
+
+        if(!TextUtils.isEmpty(currentWifiSSID) && (currentWifiSSID.equals(scanResult.SSID) || currentWifiSSID.equals("\"" + scanResult.SSID + "\""))){
+            tv_name.setTextColor(mContext.getResources().getColor(R.color.app_main_yellow));
+            tv_name.setText(scanResult.SSID+"\n(已连接)");
+        }else{
+            tv_name.setText(scanResult.SSID);
+            tv_name.setTextColor(mContext.getResources().getColor(R.color.white));
+        }
 
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,5 +43,9 @@ public class WifiListAdapter extends BaseViewCommonAdapter<ScanResult> {
                 mContext.startActivity(intent);
             }
         });
+    }
+
+    public void setCurrentWifiSSID(String ssid){
+        this.currentWifiSSID = ssid;
     }
 }

@@ -12,6 +12,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wty.app.wifilamp.R;
 import com.wty.app.wifilamp.adapter.WifiListAdapter;
+import com.wty.app.wifilamp.wifi.ControlLight;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -38,17 +42,19 @@ import static android.os.Build.VERSION_CODES.M;
  * 描述：Wifi连接页面
  */
 public class WifiConnectActivity extends BaseActivity {
-    public static final String TAG = "WifiConnectActivity";
 
     @BindView(R.id.main_setting) ImageView main_setting;
     @BindView(R.id.wifi_connect_icon) ImageView wifiConnectIcon;
+    @BindView(R.id.wifi_connect_state) ImageView wifiState;
     @BindView(R.id.wifi_state_ll) LinearLayout wifiStateLL;
-    @BindView(R.id.wifi_name) TextView wifiName;
+    @BindView(R.id.wifi_state_tv_1) TextView wifistate;
     @BindView(R.id.button_enter) Button enter;
     @BindView(R.id.wifi_list) ListView listView;
 
     private WifiListAdapter adapter;
     private List<ScanResult> list = new ArrayList<>();
+    private Animation operatingAnim;
+    private boolean isConnecting;
     WifiManager wifiManager;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -75,9 +81,7 @@ public class WifiConnectActivity extends BaseActivity {
 
                     WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-                    wifiConnectIcon.setImageResource(R.mipmap.wifi_connect_y);
-                    wifiName.setText(wifiInfo.getSSID());
-
+                    adapter.setCurrentWifiSSID(wifiInfo.getSSID());
                     adapter.refreshList(list);
                 }
             }
@@ -124,11 +128,20 @@ public class WifiConnectActivity extends BaseActivity {
     }
 
     private void initView() {
+
+        operatingAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        operatingAnim.setInterpolator(new LinearInterpolator());
+
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                if(!ControlLight.newInstance().isConnected()){
+//                    Toast.makeText(WifiConnectActivity.this,"无法连接上WiFi灯，暂时无法操作!",Toast.LENGTH_LONG).show();
+//                    return;
+//                }
                 Intent intent = new Intent(WifiConnectActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -137,6 +150,14 @@ public class WifiConnectActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(WifiConnectActivity.this, SettingActivity.class);
                 startActivity(intent);
+                finish();
+            }
+        });
+
+        wifiState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                connectWiFiLamp();
             }
         });
     }
@@ -147,33 +168,94 @@ public class WifiConnectActivity extends BaseActivity {
         if(wifiManager != null){
             wifiManager.startScan();
         }
+
         /**
          * 在onPause()中判断wifi连接状态
          *暂时不做wifi状态监听（wifi确认链接后返回页面，或者重启app，才会生效）
          */
+        connectWiFiLamp();
     }
 
     /**
-     * 连接成功  获取当前连接的wifi
+     * 连接wifi灯
+     **/
+    private void connectWiFiLamp(){
+
+        if(isConnecting)return;
+
+        if(ControlLight.newInstance().isConnected()){
+            //如果已经连接成功了
+            connectSucces();
+        }
+
+        ControlLight.setOnConnectStateListener(new ControlLight.ConnectStateListener() {
+
+            @Override
+            public void startConnect() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connectStart();
+                    }
+                });
+            }
+
+            @Override
+            public void connectSuccess() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connectSucces();
+                    }
+                });
+            }
+
+            @Override
+            public void connectFailed() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        connectFail();
+                    }
+                });
+            }
+        });
+
+        ControlLight.connectLight();
+    }
+
+    /**
+     * 连接开始
+     **/
+    private void connectStart(){
+        isConnecting = true;
+        wifiState.setImageResource(R.mipmap.wifi_list_icon);
+        wifiConnectIcon.startAnimation(operatingAnim);
+        wifistate.setText(getResources().getText(R.string.connectting));
+        enter.setEnabled(false);
+    }
+
+    /**
+     * 连接成功
      */
-    public void connectY() {
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        wifiConnectIcon.setImageResource(R.mipmap.wifi_connect_y);
-        wifiStateLL.setVisibility(View.INVISIBLE);
-        wifiName.setVisibility(View.VISIBLE);
-        enter.setVisibility(View.VISIBLE);
-        wifiName.setText(wifiInfo.getSSID());
+    public void connectSucces() {
+        isConnecting = false;
+        wifiState.setImageResource(R.mipmap.wifi_connect_y);
+        wifiConnectIcon.clearAnimation();
+        wifistate.setText(getResources().getText(R.string.connectsuccess));
+        enter.setEnabled(true);
     }
 
     /**
      *连接失败
      */
-    public void connectN() {
-        wifiConnectIcon.setImageResource(R.mipmap.wifi_connect_n);
-        wifiStateLL.setVisibility(View.VISIBLE);
-        wifiName.setVisibility(View.INVISIBLE);
-        enter.setVisibility(View.VISIBLE);
+    public void connectFail() {
+        isConnecting = false;
+        wifiState.setImageResource(R.mipmap.wifi_connect_n);
+        wifiConnectIcon.clearAnimation();
+        wifistate.setText(getResources().getText(R.string.connectfail));
+        enter.setEnabled(true);
+        Toast.makeText(this,"无法连接上WiFi灯，请检查设置是否正确!",Toast.LENGTH_SHORT).show();
     }
 
     @Override

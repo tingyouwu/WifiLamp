@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="WCircleColorPicker">
+
+        <!-- 当前颜色指示器的长度 -->
+        <attr name="wcp_pointerLength" format="dimension|reference" />
+
+        <!-- 当前颜色指示器的线条的宽度 -->
+        <attr name="wcp_pointerWidth" format="dimension|reference" />
+
+        <!-- 当前颜色指示器的颜色 -->
+        <attr name="wcp_pointerColor" format="color|reference" />
+
+    </declare-styleable>
+
+</resources>

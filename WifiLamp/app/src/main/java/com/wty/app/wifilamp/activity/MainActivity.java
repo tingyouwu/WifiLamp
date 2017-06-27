@@ -7,20 +7,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.wty.app.wifilamp.R;
 import com.wty.app.wifilamp.adapter.MyPagerAdapter;
+import com.wty.app.wifilamp.eventbus.WifiEvent;
 import com.wty.app.wifilamp.fragment.BrightFragment;
+import com.wty.app.wifilamp.fragment.ColorFragment;
+import com.wty.app.wifilamp.fragment.GradientFragment;
 import com.wty.app.wifilamp.widget.CustomViewpager;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.SimpleViewPagerDelegate;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +43,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @BindView(R.id.light_off) ImageView lightOff;
     @BindView(R.id.light_on) ImageView lightOn;
-    @BindView(R.id.main_setting) ImageView setImg;
     @BindView(R.id.back_wifi_list) ImageView backWifiList;
     @BindView(R.id.indicator) MagicIndicator magicIndicator;
     @BindView(R.id.viewpager) CustomViewpager viewPager;
@@ -46,12 +53,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(WifiEvent event){
+
     }
 
     private void initView(){
         lightOff.setOnClickListener(this);
         lightOn.setOnClickListener(this);
-        setImg.setOnClickListener(this);
         backWifiList.setOnClickListener(this);
 
         final List<String> tabNames = new ArrayList<>();
@@ -61,9 +79,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         tabNames.add(getString(R.string.tab_color));
         tabNames.add(getString(R.string.tab_gradient));
 
+
         fragments.add(new BrightFragment());
-        fragments.add(new BrightFragment());
-        fragments.add(new BrightFragment());
+        fragments.add(new ColorFragment());
+        fragments.add(new GradientFragment());
 
         /**
          * 禁止viewpager 滑动
@@ -71,6 +90,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         viewPager.setPagingEnabled(false);
 
         CommonNavigator commonNavigator = new CommonNavigator(this);
+        commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -96,34 +116,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
-                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
-                indicator.setLineWidth(context.getResources().getDimension(R.dimen.indicator_line_width));
-                indicator.setLineHeight(context.getResources().getDimension(R.dimen.indicator_line_height));
+                indicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
                 indicator.setColors(context.getResources().getColor(R.color.white));
                 return indicator;
             }
         });
-        commonNavigator.setAdjustMode(true);
+
         magicIndicator.setNavigator(commonNavigator);
-        SimpleViewPagerDelegate.with(magicIndicator, viewPager).delegate();
 
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), tabNames, fragments);
         viewPager.setAdapter(pagerAdapter);
 
+        ViewPagerHelper.bind(magicIndicator, viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                magicIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
 
             @Override
             public void onPageSelected(int position) {
-
+                if(fragments.get(position) instanceof ColorFragment){
+                    lightOff.setVisibility(View.GONE);
+                    lightOn.setVisibility(View.GONE);
+                }else{
+                    lightOff.setVisibility(View.VISIBLE);
+                    lightOn.setVisibility(View.VISIBLE);
+                }
+                magicIndicator.onPageSelected(position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                magicIndicator.onPageScrollStateChanged(state);
             }
         });
     }
@@ -140,30 +165,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 /*** 灯总开关：开启*/
                 lightOff.setVisibility(View.VISIBLE);
                 lightOn.setVisibility(View.INVISIBLE);
-                /**
-                 * 先开启灯，再获取当前的模式
-                 */
-                lightOff.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                }, 1000);
-
                 break;
-            case R.id.main_setting: {
-                /**
-                 * 跳转至设置界面
-                 */
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                startActivity(intent);
-            }
-            break;
-
             case R.id.back_wifi_list:
                 /**
                  * 跳转到wifi列表
                  */
-                finish();
+                Intent intent = new Intent(MainActivity.this, WifiConnectActivity.class);
+                startActivity(intent);
                 break;
         }
     }

@@ -13,18 +13,9 @@
         android:layout_height="38dp">
 
         <ImageView
-            android:id="@+id/main_setting"
+            android:id="@+id/back_wifi_list"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/main_setting"
-            android:layout_width="60dp"
-            android:layout_height="25dp" />
-
-        <ImageView
-            android:id="@+id/back_wifi_list"
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             android:src="@mipmap/wifi_list_icon"
             android:layout_width="60dp"
             android:layout_height="25dp" />

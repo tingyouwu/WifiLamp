@@ -1,18 +1,28 @@
 <resources>
     <string name="app_name">WIFI彩灯</string>
-    <string name="no_wifi_remind">彩灯未连接，请先连接</string>
     <string name="connect">连接</string>
     <string name="enter">进入</string>
     <string name="restart">保存并重启</string>
-    <string name="setting">设置</string>
+    <string name="setting">设置IP与端口</string>
     <string name="setting_tv_1">请输入IP地址</string>
     <string name="setting_tv_2">请输入端口号</string>
     <string name="func_tv_1">亮度</string>
     <string name="bright_seek_bar_tv_1">暗</string>
     <string name="bright_seek_bar_tv_2">正常</string>
     <string name="bright_seek_bar_tv_3">亮</string>
+    <string name="speed">速度</string>
+    <string name="frequency">频率</string>
+
+    <string name="speed_seek_bar_tv_1">慢</string>
+    <string name="speed_seek_bar_tv_2">中</string>
+    <string name="speed_seek_bar_tv_3">快</string>
 
     <string name="tab_bright">常亮</string>
-    <string name="tab_gradient">渐变</string>
+    <string name="tab_gradient">呼吸</string>
     <string name="tab_color">颜色</string>
+    <string name="tab_twinkle">闪烁</string>
+    <string name="connectting">正在连接WiFi灯...</string>
+    <string name="connectsuccess">已连接上WiFi灯</string>
+    <string name="connectfail">连接不上WiFi灯</string>
+
 </resources>

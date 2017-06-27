@@ -12,19 +12,35 @@
         android:layout_width="40dp"
         android:layout_height="40dp" />
 
-    <ImageView
-        android:id="@+id/wifi_connect_icon"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+    <RelativeLayout
+        android:id="@+id/wifi_connect_layout"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:src="@mipmap/wifi_connect_n" />
+        android:layout_marginTop="40dp">
+
+        <ImageView
+            android:id="@+id/wifi_connect_icon"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/wifi_connect" />
+
+        <ImageView
+            android:id="@+id/wifi_connect_state"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:padding="10dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/wifi_list_icon" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/wifi_state_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/wifi_connect_icon"
+        android:layout_below="@id/wifi_connect_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
@@ -33,30 +49,11 @@
             android:id="@+id/wifi_state_tv_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_wifi_remind"
+            android:text="@string/connectting"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
-        <TextView
-            android:layout_marginLeft="5dp"
-            android:id="@+id/wifi_state_tv_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connect"
-            android:textColor="@color/app_main_yellow"
-            android:textSize="16sp" />
-
     </LinearLayout>
-
-    <TextView
-        android:layout_below="@id/wifi_connect_icon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:id="@+id/wifi_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
 
     <ListView
         android:background="@color/app_main_color"
@@ -64,7 +61,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@id/wifi_state_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
