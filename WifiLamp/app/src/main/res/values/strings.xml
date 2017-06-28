@@ -24,5 +24,7 @@
     <string name="connectting">正在连接WiFi灯...</string>
     <string name="connectsuccess">已连接上WiFi灯</string>
     <string name="connectfail">连接不上WiFi灯</string>
+    <string name="no_wifi_fail">无法连接上WiFi灯，请检查设置是否正确!</string>
+
 
 </resources>

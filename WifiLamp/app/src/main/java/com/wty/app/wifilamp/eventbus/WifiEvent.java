@@ -7,10 +7,6 @@ import java.util.HashMap;
  **/
 public class WifiEvent {
 
-    public static int Type_Bright = 1;//亮度
-    public static int Type_Color = 1;//颜色
-    public static int Type_Gradien = 1;//呼吸
-
     private int type;
 
     private HashMap<String, Object> hashMap;

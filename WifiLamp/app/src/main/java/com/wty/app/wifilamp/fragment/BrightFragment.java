@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.wty.app.wifilamp.R;
+import com.wty.app.wifilamp.eventbus.WifiEvent;
+import com.wty.app.wifilamp.wifi.LightCode;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * 描述：亮度控制
@@ -31,6 +35,7 @@ public class BrightFragment extends Fragment {
 
     private void initView() {
         SeekBar seekBar = (SeekBar) rootView.findViewById(R.id.seekBar_bright);
+        seekBar.setProgress(50);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -46,13 +51,20 @@ public class BrightFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
                 int progress = seekBar.getProgress();
+                int state;
                 if (progress < 25) {
                     seekBar.setProgress(0);
+                    state = LightCode.Bright_Dark;
                 } else if (progress < 75) {
                     seekBar.setProgress(50);
+                    state = LightCode.Bright_Normal;
                 } else {
                     seekBar.setProgress(100);
+                    state = LightCode.Bright_Bright;
                 }
+                WifiEvent event = new WifiEvent(LightCode.Type_Bright);
+                event.appendHashParam(LightCode.Bright,state);
+                EventBus.getDefault().post(event);
             }
         });
     }

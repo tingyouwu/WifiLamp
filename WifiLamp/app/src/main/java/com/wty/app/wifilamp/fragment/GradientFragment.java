@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.wty.app.wifilamp.R;
+import com.wty.app.wifilamp.eventbus.WifiEvent;
+import com.wty.app.wifilamp.wifi.LightCode;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -30,8 +34,8 @@ public class GradientFragment extends Fragment {
     }
 
     private void initView() {
-
         SeekBar seekBarSpeed = (SeekBar) rootView.findViewById(R.id.seekBar_speed);
+        seekBarSpeed.setProgress(50);
         seekBarSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -47,13 +51,20 @@ public class GradientFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
                 int progress = seekBar.getProgress();
+                int state;
                 if (progress < 25) {
                     seekBar.setProgress(0);
+                    state = LightCode.Frequency_Slow;
                 } else if (progress < 75) {
                     seekBar.setProgress(50);
+                    state = LightCode.Frequency_Normal;
                 } else {
                     seekBar.setProgress(100);
+                    state = LightCode.Frequency_Fast;
                 }
+                WifiEvent event = new WifiEvent(LightCode.Type_Gradien);
+                event.appendHashParam(LightCode.Gradien_Frequency,state);
+                EventBus.getDefault().post(event);
             }
         });
     }

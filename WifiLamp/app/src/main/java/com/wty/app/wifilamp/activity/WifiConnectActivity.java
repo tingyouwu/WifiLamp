@@ -136,7 +136,7 @@ public class WifiConnectActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 //                if(!ControlLight.newInstance().isConnected()){
-//                    Toast.makeText(WifiConnectActivity.this,"无法连接上WiFi灯，暂时无法操作!",Toast.LENGTH_LONG).show();
+//                    Toast.makeText(WifiConnectActivity.this,getResources().getText(R.string.no_wifi_fail),Toast.LENGTH_LONG).show();
 //                    return;
 //                }
                 Intent intent = new Intent(WifiConnectActivity.this, MainActivity.class);
@@ -255,7 +255,7 @@ public class WifiConnectActivity extends BaseActivity {
         wifiConnectIcon.clearAnimation();
         wifistate.setText(getResources().getText(R.string.connectfail));
         enter.setEnabled(true);
-        Toast.makeText(this,"无法连接上WiFi灯，请检查设置是否正确!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,getResources().getText(R.string.no_wifi_fail),Toast.LENGTH_SHORT).show();
     }
 
     @Override

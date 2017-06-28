@@ -12,6 +12,10 @@ import com.wcolorpicker.android.IOnColorChangeListener;
 import com.wcolorpicker.android.IOnColorSelectedListener;
 import com.wcolorpicker.android.WCircleColorPicker;
 import com.wty.app.wifilamp.R;
+import com.wty.app.wifilamp.eventbus.WifiEvent;
+import com.wty.app.wifilamp.wifi.LightCode;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * 描述：颜色
@@ -44,6 +48,11 @@ public class ColorFragment extends Fragment implements IOnColorChangeListener,IO
     @Override
     public void onColorSelected(int red, int green, int blue) {
         tv_color.setText("R:"+red+",G:"+green+",B:"+blue);
+        WifiEvent event = new WifiEvent(LightCode.Type_Color);
+        event.appendHashParam(LightCode.Color_Red,red);
+        event.appendHashParam(LightCode.Color_Green,green);
+        event.appendHashParam(LightCode.Color_Blue,blue);
+        EventBus.getDefault().post(event);
     }
 
     @Override
