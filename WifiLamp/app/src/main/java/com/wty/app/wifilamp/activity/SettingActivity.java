@@ -39,7 +39,6 @@ public class SettingActivity extends BaseActivity{
 
     private void initView() {
         //只能输入数字和小数点
-        change_ip.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         change_port.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         change_ip.setText(PreferenceUtil.getInstance().getIP());
