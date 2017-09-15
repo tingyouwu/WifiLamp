@@ -22,6 +22,7 @@
             android:value="${UMENG_CHANNEL_VALUE}" />
 
         <activity android:name=".activity.WifiConnectActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

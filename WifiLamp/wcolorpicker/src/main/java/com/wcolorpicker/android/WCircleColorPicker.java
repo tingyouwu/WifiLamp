@@ -31,6 +31,7 @@ public class WCircleColorPicker extends View {
 
     private Rect rect;
     private Bitmap bitmap;
+    boolean init;
 
     private int old_red,old_green,old_blue;
 
@@ -107,7 +108,8 @@ public class WCircleColorPicker extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
+        if(init)return;
+        init = true;
         rect = new Rect(innerPadding, innerPadding, w - innerPadding, h - innerPadding);
         bitmap = Bitmap.createBitmap(rect.width(), rect.height(), Bitmap.Config.ARGB_8888);
         circleRadius = Math.min(rect.width(), rect.height()) / 2;

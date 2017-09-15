@@ -11,6 +11,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -150,7 +151,6 @@ public class WifiConnectActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(WifiConnectActivity.this, SettingActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 

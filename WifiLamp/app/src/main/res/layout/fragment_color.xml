@@ -20,16 +20,23 @@
         android:textSize="16sp"
         android:textColor="@color/app_main_yellow"/>
 
-    <com.wcolorpicker.android.WCircleColorPicker
-        android:id="@+id/color_picker"
+    <com.wcolorpicker.android.SquareLayout
+        android:id="@+id/color_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <com.wcolorpicker.android.ColorPicker
+            android:id="@+id/color_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.wcolorpicker.android.SquareLayout>
 
     <View
         android:id="@+id/color_view"
         android:layout_width="40dp"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/color_picker"
+        android:layout_below="@id/color_layout"
         android:background="@android:color/white"
         android:layout_centerHorizontal="true"
         android:layout_height="40dp"/>
