@@ -320,7 +320,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
         sendMessage = jb.toString();
         handler.removeCallbacks(sendThread);
-        handler.postDelayed(sendThread, 10);
+        handler.postDelayed(sendThread, 20);
     }
 
     /**
