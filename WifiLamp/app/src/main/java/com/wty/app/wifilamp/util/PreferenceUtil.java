@@ -14,6 +14,7 @@ public class PreferenceUtil {
 	private static String PREFERENCES_NAME = "Preferences";//preference名字
 	public static String IP = "ip";//ip地址
 	public static String PORT = "port";//端口
+	public static String PSW = "psw";//端口
 
 	private SharedPreferences mSharedPreferences;
 
@@ -47,6 +48,10 @@ public class PreferenceUtil {
 
 	public String getIP(){
 		return mSharedPreferences.getString(IP,"192.168.4.1");
+	}
+
+	public String getPSW(){
+		return mSharedPreferences.getString(PSW,"");
 	}
 
 	public int getPort(){

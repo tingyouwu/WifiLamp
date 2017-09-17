@@ -11,7 +11,6 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -50,6 +49,7 @@ public class WifiConnectActivity extends BaseActivity {
     @BindView(R.id.wifi_state_ll) LinearLayout wifiStateLL;
     @BindView(R.id.wifi_state_tv_1) TextView wifistate;
     @BindView(R.id.button_enter) Button enter;
+    @BindView(R.id.button_smartconfig) Button smartconfig;
     @BindView(R.id.wifi_list) ListView listView;
 
     private WifiListAdapter adapter;
@@ -136,13 +136,21 @@ public class WifiConnectActivity extends BaseActivity {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(!ControlLight.newInstance().isConnected()){
-//                    Toast.makeText(WifiConnectActivity.this,getResources().getText(R.string.no_wifi_fail),Toast.LENGTH_LONG).show();
-//                    return;
-//                }
+                if(!ControlLight.newInstance().isConnected()){
+                    Toast.makeText(WifiConnectActivity.this,getResources().getText(R.string.no_wifi_fail),Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = new Intent(WifiConnectActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        smartconfig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WifiConnectActivity.this, SmartConfigActivity.class);
+                startActivity(intent);
             }
         });
 

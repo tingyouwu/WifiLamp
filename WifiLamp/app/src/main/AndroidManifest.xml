@@ -44,6 +44,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".activity.SmartConfigActivity"
+            android:windowSoftInputMode="stateUnchanged|adjustResize"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 
 </manifest>

@@ -67,17 +67,36 @@
         android:layout_height="match_parent"/>
 
 
-    <Button
-        android:layout_marginBottom="16dp"
+    <LinearLayout
+        android:layout_margin="16dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/yellow_shape"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:text="@string/enter"
-        android:textColor="@color/white_2"
-        android:textSize="18sp"
-        android:id="@+id/button_enter" />
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/yellow_shape"
+            android:layout_marginRight="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="46dp"
+            android:text="@string/home"
+            android:textColor="@color/white_2"
+            android:textSize="18sp"
+            android:id="@+id/button_enter" />
+
+        <Button
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/yellow_shape"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="46dp"
+            android:text="@string/config"
+            android:textColor="@color/white_2"
+            android:textSize="18sp"
+            android:id="@+id/button_smartconfig" />
+
+    </LinearLayout>
 
 </RelativeLayout>

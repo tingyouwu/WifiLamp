@@ -1,1 +1,1 @@
-include ':app',':wcolorpicker'
+include ':app', ':wcolorpicker', ':smartconfig'
