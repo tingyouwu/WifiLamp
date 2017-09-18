@@ -45,7 +45,7 @@
             android:gravity="center"
             android:autoLink="all"
             android:textColorLink="@color/white"
-            android:text="http://www.arduino.cn/thread-31519-1-1.html\n"
+            android:text="http://www.arduino.cn/thread-49461-1-1.html\n"
             />
 
         <TextView

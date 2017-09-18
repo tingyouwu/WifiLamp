@@ -137,9 +137,8 @@ public class SmartConfigActivity extends SweetDialogActivity{
                         if (firstResult.isSuc()) {
                             StringBuilder sb = new StringBuilder();
                             for (IEsptouchResult resultInList : result) {
-                                sb.append("配置成功, bssid = "
-                                        + resultInList.getBssid()
-                                        + ",InetAddress = "
+                                sb.append("配置成功, "
+                                        + ",IP地址 = "
                                         + resultInList.getInetAddress()
                                         .getHostAddress() + "\n");
                                 count++;
@@ -159,7 +158,7 @@ public class SmartConfigActivity extends SweetDialogActivity{
                                 }
                             });
                         } else {
-                            onToastErrorMsg("配置失败");
+                            onToastErrorMsg("配置失败,请确保智能终端打开了一键配置模式");
                         }
                     }
                 }
