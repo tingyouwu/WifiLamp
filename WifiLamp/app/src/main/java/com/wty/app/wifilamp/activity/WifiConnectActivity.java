@@ -136,10 +136,6 @@ public class WifiConnectActivity extends BaseActivity {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!ControlLight.newInstance().isConnected()){
-                    Toast.makeText(WifiConnectActivity.this,getResources().getText(R.string.no_wifi_fail),Toast.LENGTH_LONG).show();
-                    return;
-                }
                 Intent intent = new Intent(WifiConnectActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
