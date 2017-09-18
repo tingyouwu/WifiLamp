@@ -55,7 +55,7 @@ public class PreferenceUtil {
 	}
 
 	public int getPort(){
-		return mSharedPreferences.getInt(PORT,8888);
+		return mSharedPreferences.getInt(PORT,8266);
 	}
 
 	/**

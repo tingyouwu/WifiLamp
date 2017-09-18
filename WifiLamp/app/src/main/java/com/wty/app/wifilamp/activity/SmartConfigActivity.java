@@ -142,6 +142,8 @@ public class SmartConfigActivity extends SweetDialogActivity{
                                         + resultInList.getInetAddress()
                                         .getHostAddress() + "\n");
                                 count++;
+                                PreferenceUtil.getInstance().writePreferences(PreferenceUtil.IP,resultInList.getInetAddress()
+                                        .getHostAddress());
                                 if (count >= maxDisplayCount) {
                                     break;
                                 }
