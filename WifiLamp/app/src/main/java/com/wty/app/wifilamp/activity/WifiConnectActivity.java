@@ -136,6 +136,11 @@ public class WifiConnectActivity extends BaseActivity {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!ControlLight.newInstance().isConnected()){
+                    Toast.makeText(WifiConnectActivity.this,getResources().getText(R.string.no_wifi_fail),Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 Intent intent = new Intent(WifiConnectActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -190,6 +195,7 @@ public class WifiConnectActivity extends BaseActivity {
         if(ControlLight.newInstance().isConnected()){
             //如果已经连接成功了
             connectSucces();
+            return;
         }
 
         ControlLight.setOnConnectStateListener(new ControlLight.ConnectStateListener() {

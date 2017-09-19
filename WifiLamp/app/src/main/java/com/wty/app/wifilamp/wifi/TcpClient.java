@@ -49,6 +49,7 @@ public abstract class TcpClient implements Runnable {
 
                 @Override
                 public void onReceive(InetAddress addr, String s) {
+                    connect = true;
                     TcpClient.this.onReceive(this, s);
                 }
 
